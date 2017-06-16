@@ -16,14 +16,14 @@ describe("Controlled input type='checkbox' tests", () => {
     document.body.removeChild(container);
   });
 
-  it("Controlled checkbox, checked=false", function() {
+  it("#1 Controlled checkbox, checked=false", function() {
     render(<input type="checkbox" checked={false} />, container);
     const input = container.firstChild;
 
     expect(input.checked).toBe(false);
   });
 
-  it("Controlled checkbox, checked=false, got onClick with valid values", function() {
+  it("#2 Controlled checkbox, checked=false, got onClick with valid values", function() {
     let gotOnClick = false;
     let newChecked = null;
 
@@ -43,11 +43,11 @@ describe("Controlled input type='checkbox' tests", () => {
     triggerEvent("click", input);
 
     expect(input.checked).toBe(false);
-    expect(gotOnClick).toBe(true);
-    expect(newChecked).toBe(true);
+    expect({ gotOnClick }).toEqual({ gotOnClick: true });
+    expect({ newChecked }).toEqual({ newChecked: true });
   });
 
-  it("Controlled checkbox, checked=false, got onChange with valid values", function() {
+  it("#3 Controlled checkbox, checked=false, got onChange with valid values", function() {
     let gotOnChange = false;
     let newChecked = null;
 
@@ -67,8 +67,63 @@ describe("Controlled input type='checkbox' tests", () => {
     triggerEvent("click", input);
 
     expect(input.checked).toBe(false);
-    expect(gotOnChange).toBe(true);
-    expect(newChecked).toBe(true);
+    expect({ gotOnChange }).toEqual({ gotOnChange: true });
+    expect({ newChecked }).toEqual({ newChecked: true });
+  });
+
+  it("#4 Controlled checkbox, checked=true", function() {
+    render(<input type="checkbox" checked={true} />, container);
+    const input = container.firstChild;
+
+    expect(input.checked).toBe(true);
+  });
+
+  it("#5 Controlled checkbox, checked=true, got onClick with valid values", function() {
+    let gotOnClick = false;
+    let newChecked = null;
+
+    render(
+      <input
+        type="checkbox"
+        checked={true}
+        onClick={e => {
+          gotOnClick = true;
+          newChecked = e.target.checked;
+        }}
+      />,
+      container
+    );
+    const input = container.firstChild;
+
+    triggerEvent("click", input);
+
+    expect(input.checked).toBe(true);
+    expect({ gotOnClick }).toEqual({ gotOnClick: true });
+    expect({ newChecked }).toEqual({ newChecked: false });
+  });
+
+  it("#6 Controlled checkbox, checked=true, got onChange with valid values", function() {
+    let gotOnChange = false;
+    let newChecked = null;
+
+    render(
+      <input
+        type="checkbox"
+        checked={true}
+        onChange={e => {
+          gotOnChange = true;
+          newChecked = e.target.checked;
+        }}
+      />,
+      container
+    );
+    const input = container.firstChild;
+
+    triggerEvent("click", input);
+
+    expect(input.checked).toBe(true);
+    expect({ gotOnChange }).toEqual({ gotOnChange: true });
+    expect({ newChecked }).toEqual({ newChecked: false });
   });
 });
 
@@ -87,14 +142,14 @@ describe("Controlled input type='radio' tests", () => {
     document.body.removeChild(container);
   });
 
-  it("Controlled radio, checked=false", function() {
+  it("#1 Controlled radio, checked=false", function() {
     render(<input type="radio" checked={false} value="magic" />, container);
     const input = container.firstChild;
 
     expect(input.checked).toBe(false);
   });
 
-  it("Controlled radio, checked=false, got onClick with valid values", function() {
+  it("#2 Controlled radio, checked=false, got onClick with valid values", function() {
     let gotOnClick = false;
     let newChecked = null;
 
@@ -103,8 +158,9 @@ describe("Controlled input type='radio' tests", () => {
         type="radio"
         checked={false}
         value="magic"
-        onClick={() => {
+        onClick={e => {
           gotOnClick = true;
+          newChecked = e.target.checked;
         }}
       />,
       container
@@ -114,11 +170,11 @@ describe("Controlled input type='radio' tests", () => {
     triggerEvent("click", input);
 
     expect(input.checked).toBe(false);
-    expect(gotOnClick).toBe(true);
-    expect(newChecked).toBe(true);
+    expect({ gotOnClick }).toEqual({ gotOnClick: true });
+    expect({ newChecked }).toEqual({ newChecked: true });
   });
 
-  it("Controlled radio, checked=false, got onChange with valid values", function() {
+  it("#3 Controlled radio, checked=false, got onChange with valid values", function() {
     let gotOnChange = false;
     let newChecked = null;
 
@@ -139,7 +195,7 @@ describe("Controlled input type='radio' tests", () => {
     triggerEvent("click", input);
 
     expect(input.checked).toBe(false);
-    expect(gotOnChange).toBe(true);
-    expect(newChecked).toBe(true);
+    expect({ gotOnChange }).toEqual({ gotOnChange: true });
+    expect({ newChecked }).toEqual({ newChecked: true });
   });
 });

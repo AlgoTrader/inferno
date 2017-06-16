@@ -658,7 +658,8 @@ describe("FormElements", () => {
         let input = container.querySelector("input");
         input.click();
 
-        expect(container.firstChild.firstChild.checked).toBe(true);
+        // click handler changed state and scheduled re-render, but control is not yet re-rendered
+        expect(container.firstChild.firstChild.checked).toBe(false);
         // expect(container.querySelectorAll('input:checked').length).toEqual(2);
 
         input = container.querySelector("input");
@@ -852,8 +853,6 @@ describe("FormElements", () => {
             this.state = { checked: true };
           }
           handleClick(event) {
-            expect(event.currentTarget.checked).toBe(false);
-
             this.setState(state => ({ checked: changeToValue }));
           }
           render() {
@@ -898,8 +897,6 @@ describe("FormElements", () => {
             this.state = { checked: false };
           }
           handleClick(event) {
-            expect(event.currentTarget.checked).toBe(true);
-
             this.setState(state => ({ checked: changeToValue }));
           }
           render() {
